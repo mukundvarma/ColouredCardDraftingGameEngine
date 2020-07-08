@@ -26,7 +26,7 @@ class Logger:
 		self.log.append("Starting age %s" % (self._get_age_string()))
 
 	def log_action(self, player, action, card):
-		text = "%s " % (player.get_name())
+		text = "%s " % (player.name)
 		if action == ACTION_PLAYCARD:
 			text += "player %s, using blaa...." % (card.pretty_print_name())
 		elif action == ACTION_DISCARD:
@@ -37,12 +37,12 @@ class Logger:
 		self.log.append(text)
 	
 	def log_buy_card_with_chain(self, player, card):
-		text = "%s " % (player.get_name())
+		text = "%s " % (player.name)
 		text += "played %s (for free with %s)" % (card.pretty_print_name(), find_card(self.card_list, card.prechains[0]).pretty_print_name())
 		self.log.append(text)
 	
 	def log_buy_card(self, player, card, how):
-		text = "%s " % (player.get_name())
+		text = "%s " % (player.name)
 		text += "played %s " % (card.pretty_print_name())
 		if how.coins or how.east_cost or how.west_cost:
 			text += "paying "

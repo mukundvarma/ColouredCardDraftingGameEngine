@@ -15,8 +15,9 @@ from common import *
 import cards
 
 class Player:
-	def __init__(self, name):
+	def __init__(self, name, personality=None):
 		self.name = name
+		self.personality = personality
 		self.money = 3
 		self.tableau = [] # all the players played cards
 		self.military = [] # war wins/losses
@@ -31,14 +32,23 @@ class Player:
 		}
 		self.west_trade_prices = self.east_trade_prices.copy()
 		self.wonder = None
-		self.personality = None
 	
-	def set_personality(self, persona):
-		self.personality = persona
+	@property
+	def personality(self):
+		return self._personality
 	
-	def get_name(self):
-		return self.name
+	@personality.setter
+	def personality(self, persona):
+		self._personality = persona
 	
+	@property
+	def name(self):
+		return self._name
+	
+	@name.setter
+	def name(self, name):
+		self._name = name
+
 	def get_cards(self):
 		return self.tableau
 	
@@ -56,24 +66,24 @@ class Player:
 			if False:#self.wonder.built_stages < 3: #FIXMEself.wonder.stages:
 				options.append((ACTION_STAGEWONDER, card))
 		i = 0
-		print "-=================-"
+		print("-=================-")
 		
 		options = sorted(options, key=lambda x: {CARDS_GREY:0, CARDS_BROWN:1, CARDS_YELLOW:2, CARDS_BLUE:3, CARDS_RED:4, CARDS_GREEN:5, CARDS_PURPLE:6}[x[1].get_colour()])
 		for o in options:
 			actions = { ACTION_PLAYCARD:"Play", ACTION_DISCARD:"Discard", ACTION_STAGEWONDER:"Stage" }
 			card = o[1]
-			print "[%d]: %s\t%s\t%s" % (i, actions[o[0]], card.get_cost_as_string(), card.pretty_print_name())
+			print("[%d]: %s\t%s\t%s" % (i, actions[o[0]], card.get_cost_as_string(), card.pretty_print_name()))
 			i += 1
-		print "-=================-"
+		print("-=================-")
 
 		return options[self.personality.make_choice(options)]
 	
 	def print_tableau(self):
 		cards = { CARDS_BROWN:[], CARDS_GREY:[], CARDS_YELLOW:[], CARDS_BLUE:[], CARDS_RED:[], CARDS_GREEN:[], CARDS_PURPLE:[] }
-		print "You have $%d" % (self.money)
-		print "War points: %s" % (self.military)
-		print self.west_trade_prices
-		print self.east_trade_prices
+		print("You have $%d" % (self.money))
+		print("War points: %s" % (self.military))
+		print(self.west_trade_prices)
+		print(self.east_trade_prices)
 		for c in self.get_cards():
 			cards[c.get_colour()].append(c)
 		
@@ -90,14 +100,19 @@ class Player:
 				else:
 					line[colour] = "        "
 			
-			print "%s\t%s\t%s\t%s\t%s\t%s\t%s" % ( line[CARDS_BROWN], line[CARDS_GREY], line[CARDS_YELLOW], line[CARDS_BLUE], line[CARDS_RED], line[CARDS_GREEN],line[CARDS_PURPLE])
+			print("%s\t%s\t%s\t%s\t%s\t%s\t%s" % ( line[CARDS_BROWN], line[CARDS_GREY], line[CARDS_YELLOW], line[CARDS_BLUE], line[CARDS_RED], line[CARDS_GREEN],line[CARDS_PURPLE]))
 		
 	
-	def set_wonder(self, wonder):
-		self.wonder = wonder
+	@property
+	def wonder(self):
+		return self._wonder
+	
+	@wonder.setter
+	def wonder(self, wonder):
+		self._wonder = wonder
 	
 	def is_card_in_tableau(self, card):
-		return find_card(self.get_cards(), card.get_name()) != None
+		return find_card(self.get_cards(), card.get_name()) is not None
 
 	def can_build_with_chain(self, card):
 		for precard in card.prechains:

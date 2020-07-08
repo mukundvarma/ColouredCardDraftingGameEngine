@@ -1,2 +1,4 @@
 *.pyc
-
+*.txt
+.DS_store
+__pycache__

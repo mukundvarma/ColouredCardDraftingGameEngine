@@ -36,7 +36,7 @@ class GameState:
 		for i in range(len(players)):
 			name, persona = players[i]
 			self.players.append(Players.Player(name))
-			self.players[i].set_personality(persona())
+			self.players[i].personality = persona()
 		
 	def setup_age_cards(self, cards):
 		age_1 = [c for c in cards if c.age == 1 and c.players <= self.player_count]
@@ -131,10 +131,10 @@ class GameState:
 				east = self._get_east_player(p)
 				player = self.players[p]
 				player_strength, opponent_strength, score = helpers.score_military(player, west, age)
-				self.logger.log_military_battle(player.get_name(), player_strength, west.get_name(), opponent_strength, score)
+				self.logger.log_military_battle(player.name, player_strength, west.name, opponent_strength, score)
 				self.players[p].military.append(score)
 				player_strength, opponent_strength, score = helpers.score_military(player, east, age)
-				self.logger.log_military_battle(player.get_name(), player_strength, east.get_name(), opponent_strength, score)
+				self.logger.log_military_battle(player.name, player_strength, east.name, opponent_strength, score)
 				self.players[p].military.append(score)
 		for i in range(self.player_count):
 			player = self.players[i]
@@ -153,8 +153,8 @@ class GameState:
 			player.print_tableau()
 			totalscore = bluescore + greenscore + redscore + moneyscore + yellowscore + purplescore
 			text = "Final score: Blue: %d, Green: %d, red: %d, yellow: %d, purple: %d, $: %d, total: %d" % (bluescore, greenscore, redscore, yellowscore, purplescore, moneyscore, totalscore)
-			self.logger.log_freetext(player.get_name() + " " + text)
-			print text
+			self.logger.log_freetext(player.name + " " + text)
+			print(text)
 		
 		logfile = open("logfile.txt", "w")
 		self.logger.dump(logfile)
