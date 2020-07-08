@@ -1,3 +1,9 @@
+# Wonders
+
+Port of https://github.com/jdgordon/ColouredCardDraftingGameEngine
+
+## Old Readme
+
 This is an implementation of the 7 wonders board game by Antoine Bauza.
 
 TODO List:
